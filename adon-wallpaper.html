@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>Adon - Tech Wallpaper</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@900&family=Rajdhani:wght@300;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    background: #080c12;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 1920px;
+    height: 1080px;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 1920px;
+    height: 1080px;
+    pointer-events: none;
+  }
+
+  .name-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 10;
+  }
+
+  .name {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 220px;
+    letter-spacing: 0.15em;
+    color: transparent;
+    -webkit-text-stroke: 2px #00f5c4;
+    text-stroke: 2px #00f5c4;
+    position: relative;
+    text-shadow:
+      0 0 40px rgba(0, 245, 196, 0.4),
+      0 0 80px rgba(0, 245, 196, 0.2),
+      0 0 160px rgba(0, 245, 196, 0.1);
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  .name::before {
+    content: 'ADON';
+    position: absolute;
+    top: 0; left: 0;
+    -webkit-text-stroke: 0;
+    color: #00f5c4;
+    opacity: 0.07;
+    transform: translate(6px, 6px);
+    filter: blur(3px);
+  }
+
+  .name-sub {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 300;
+    font-size: 22px;
+    letter-spacing: 0.8em;
+    color: #0af;
+    text-transform: uppercase;
+    margin-top: -10px;
+    opacity: 0.7;
+  }
+
+  @keyframes pulse {
+    0%, 100% { text-shadow: 0 0 40px rgba(0,245,196,0.4), 0 0 80px rgba(0,245,196,0.2); }
+    50% { text-shadow: 0 0 60px rgba(0,245,196,0.7), 0 0 120px rgba(0,245,196,0.4), 0 0 200px rgba(0,245,196,0.15); }
+  }
+
+  .scanlines {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 245, 196, 0.015) 2px,
+      rgba(0, 245, 196, 0.015) 4px
+    );
+    z-index: 5;
+  }
+
+  .vignette {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.85) 100%);
+    z-index: 4;
+  }
+
+  .corner {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    z-index: 10;
+    opacity: 0.6;
+  }
+  .corner svg { width: 100%; height: 100%; }
+  .tl { top: 40px; left: 40px; }
+  .tr { top: 40px; right: 40px; transform: scaleX(-1); }
+  .bl { bottom: 40px; left: 40px; transform: scaleY(-1); }
+  .br { bottom: 40px; right: 40px; transform: scale(-1); }
+
+  .status-bar {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 40px;
+    z-index: 10;
+    opacity: 0.4;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: #00f5c4;
+    text-transform: uppercase;
+  }
+
+  .hex-grid {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 1;
+    opacity: 0.06;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<svg class="hex-grid" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="hex" x="0" y="0" width="60" height="52" patternUnits="userSpaceOnUse">
+      <polygon points="30,1 59,16 59,36 30,51 1,36 1,16" fill="none" stroke="#00f5c4" stroke-width="0.8"/>
+    </pattern>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#hex)"/>
+</svg>
+
+<div class="vignette"></div>
+<div class="scanlines"></div>
+
+<!-- Corner decorations -->
+<div class="corner tl">
+  <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 110 L10 10 L110 10" stroke="#00f5c4" stroke-width="2"/>
+    <path d="M10 80 L10 40 L40 10" stroke="#0af" stroke-width="1" opacity="0.5"/>
+    <circle cx="10" cy="10" r="4" fill="#00f5c4"/>
+    <rect x="30" y="10" width="6" height="6" fill="#0af" opacity="0.7"/>
+    <rect x="10" y="30" width="6" height="6" fill="#0af" opacity="0.7"/>
+    <path d="M20 10 L20 20 L10 20" stroke="#00f5c4" stroke-width="0.8" opacity="0.4"/>
+  </svg>
+</div>
+<div class="corner tr">
+  <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 110 L10 10 L110 10" stroke="#00f5c4" stroke-width="2"/>
+    <path d="M10 80 L10 40 L40 10" stroke="#0af" stroke-width="1" opacity="0.5"/>
+    <circle cx="10" cy="10" r="4" fill="#00f5c4"/>
+    <rect x="30" y="10" width="6" height="6" fill="#0af" opacity="0.7"/>
+    <rect x="10" y="30" width="6" height="6" fill="#0af" opacity="0.7"/>
+  </svg>
+</div>
+<div class="corner bl">
+  <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 110 L10 10 L110 10" stroke="#00f5c4" stroke-width="2"/>
+    <circle cx="10" cy="10" r="4" fill="#00f5c4"/>
+    <rect x="30" y="10" width="6" height="6" fill="#0af" opacity="0.7"/>
+    <rect x="10" y="30" width="6" height="6" fill="#0af" opacity="0.7"/>
+  </svg>
+</div>
+<div class="corner br">
+  <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 110 L10 10 L110 10" stroke="#00f5c4" stroke-width="2"/>
+    <circle cx="10" cy="10" r="4" fill="#00f5c4"/>
+    <rect x="30" y="10" width="6" height="6" fill="#0af" opacity="0.7"/>
+    <rect x="10" y="30" width="6" height="6" fill="#0af" opacity="0.7"/>
+  </svg>
+</div>
+
+<div class="name-container">
+  <div class="name">ADON</div>
+  <div class="name-sub">System Online &nbsp; // &nbsp; Access Granted</div>
+</div>
+
+<div class="status-bar">
+  <span>SYS: ACTIVE</span>
+  <span>|</span>
+  <span>NET: CONNECTED</span>
+  <span>|</span>
+  <span>CPU: 98.6%</span>
+  <span>|</span>
+  <span>MEM: 16.0 GB</span>
+  <span>|</span>
+  <span>UPTIME: ∞</span>
+</div>
+
+<script>
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+canvas.width = 1920;
+canvas.height = 1080;
+
+const W = 1920, H = 1080;
+const green = '#00f5c4';
+const blue = '#00aaff';
+const darkGreen = 'rgba(0,245,196,';
+const darkBlue = 'rgba(0,170,255,';
+
+// Circuit board doodles
+const circuits = [];
+const particles = [];
+const binaryStreams = [];
+
+// Generate circuit paths
+function randBetween(a, b) { return a + Math.random() * (b - a); }
+function randInt(a, b) { return Math.floor(randBetween(a, b)); }
+
+// Circuit nodes
+const nodes = [];
+for (let i = 0; i < 120; i++) {
+  nodes.push({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    size: Math.random() * 3 + 1,
+    type: Math.floor(Math.random() * 4),
+    pulse: Math.random() * Math.PI * 2,
+    pulseSpeed: 0.02 + Math.random() * 0.03,
+    color: Math.random() > 0.5 ? green : blue
+  });
+}
+
+// Circuit lines
+const lines = [];
+for (let i = 0; i < 200; i++) {
+  const n1 = nodes[randInt(0, nodes.length)];
+  const n2 = nodes[randInt(0, nodes.length)];
+  const dx = n2.x - n1.x;
+  const dy = n2.y - n1.y;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+  if (dist < 300 && dist > 30) {
+    lines.push({ x1: n1.x, y1: n1.y, x2: n2.x, y2: n2.y, 
+      progress: Math.random(),
+      speed: 0.002 + Math.random() * 0.003,
+      color: Math.random() > 0.6 ? blue : green,
+      opacity: 0.15 + Math.random() * 0.25
+    });
+  }
+}
+
+// Floating particles
+for (let i = 0; i < 80; i++) {
+  particles.push({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
+    size: Math.random() * 2 + 0.5,
+    alpha: Math.random() * 0.6 + 0.2,
+    color: Math.random() > 0.5 ? green : blue
+  });
+}
+
+// Binary streams
+for (let i = 0; i < 18; i++) {
+  binaryStreams.push({
+    x: randBetween(50, W - 50),
+    y: Math.random() * H,
+    speed: 0.4 + Math.random() * 0.8,
+    chars: Array.from({length: 20}, () => Math.round(Math.random())),
+    alpha: 0.06 + Math.random() * 0.12,
+    size: 11 + Math.floor(Math.random() * 6)
+  });
+}
+
+// Tech doodle shapes
+const doodles = [];
+const doodleTypes = ['chip', 'antenna', 'radar', 'cpu', 'signal', 'wifi', 'resistor', 'capacitor'];
+for (let i = 0; i < 30; i++) {
+  // avoid center area
+  let x, y;
+  do {
+    x = randBetween(80, W - 80);
+    y = randBetween(80, H - 80);
+  } while (Math.abs(x - W/2) < 400 && Math.abs(y - H/2) < 220);
+  
+  doodles.push({
+    x, y,
+    type: doodleTypes[randInt(0, doodleTypes.length)],
+    size: randBetween(20, 55),
+    rotation: Math.random() * Math.PI * 2,
+    rotSpeed: (Math.random() - 0.5) * 0.005,
+    alpha: 0.12 + Math.random() * 0.22,
+    color: Math.random() > 0.4 ? green : blue
+  });
+}
+
+function drawChip(ctx, x, y, size, color, alpha) {
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+  const s = size;
+  ctx.strokeRect(x - s/2, y - s/2, s, s);
+  // pins
+  const pins = 3;
+  const gap = s / (pins + 1);
+  for (let i = 1; i <= pins; i++) {
+    // left
+    ctx.beginPath(); ctx.moveTo(x - s/2, y - s/2 + gap * i); ctx.lineTo(x - s/2 - 12, y - s/2 + gap * i); ctx.stroke();
+    // right
+    ctx.beginPath(); ctx.moveTo(x + s/2, y - s/2 + gap * i); ctx.lineTo(x + s/2 + 12, y - s/2 + gap * i); ctx.stroke();
+    // top
+    ctx.beginPath(); ctx.moveTo(x - s/2 + gap * i, y - s/2); ctx.lineTo(x - s/2 + gap * i, y - s/2 - 12); ctx.stroke();
+    // bottom
+    ctx.beginPath(); ctx.moveTo(x - s/2 + gap * i, y + s/2); ctx.lineTo(x - s/2 + gap * i, y + s/2 + 12); ctx.stroke();
+  }
+  ctx.strokeRect(x - s/4, y - s/4, s/2, s/2);
+  ctx.restore();
+}
+
+function drawAntenna(ctx, x, y, size, color, alpha) {
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+  const s = size;
+  // base
+  ctx.beginPath(); ctx.moveTo(x - s/3, y + s/2); ctx.lineTo(x + s/3, y + s/2); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x, y + s/2); ctx.lineTo(x, y - s/2); ctx.stroke();
+  // signal arcs
+  for (let r = 1; r <= 3; r++) {
+    ctx.beginPath();
+    ctx.arc(x, y, r * s / 3.5, -Math.PI * 0.8, -Math.PI * 0.2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(x, y, r * s / 3.5, -Math.PI + Math.PI * 0.2, -Math.PI + Math.PI * 0.8);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawRadar(ctx, x, y, size, color, alpha) {
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1;
+  const s = size;
+  for (let r = 1; r <= 3; r++) {
+    ctx.beginPath(); ctx.arc(x, y, r * s / 3, 0, Math.PI * 2); ctx.stroke();
+  }
+  ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - s); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + s * 0.7, y + s * 0.7); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - s * 0.7, y); ctx.stroke();
+  ctx.restore();
+}
+
+function drawResistor(ctx, x, y, size, color, alpha) {
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+  const s = size;
+  ctx.beginPath(); ctx.moveTo(x - s, y); ctx.lineTo(x - s * 0.35, y); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x + s * 0.35, y); ctx.lineTo(x + s, y); ctx.stroke();
+  ctx.strokeRect(x - s * 0.35, y - s * 0.2, s * 0.7, s * 0.4);
+  ctx.restore();
+}
+
+function drawWifi(ctx, x, y, size, color, alpha) {
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+  const s = size;
+  for (let r = 1; r <= 3; r++) {
+    ctx.beginPath();
+    ctx.arc(x, y + s * 0.3, r * s / 3, -Math.PI * 0.85, -Math.PI * 0.15);
+    ctx.stroke();
+  }
+  ctx.beginPath(); ctx.arc(x, y + s * 0.3, 3, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill();
+  ctx.restore();
+}
+
+function drawSignal(ctx, x, y, size, color, alpha) {
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+  const s = size;
+  ctx.beginPath();
+  ctx.moveTo(x - s, y);
+  for (let i = 0; i < 4; i++) {
+    const px = x - s + i * s * 0.5;
+    ctx.lineTo(px + s * 0.125, y - s * 0.4);
+    ctx.lineTo(px + s * 0.25, y + s * 0.4);
+    ctx.lineTo(px + s * 0.5, y);
+  }
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawCapacitor(ctx, x, y, size, color, alpha) {
+  ctx.save();
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+  const s = size;
+  ctx.beginPath(); ctx.moveTo(x - s, y); ctx.lineTo(x - s * 0.15, y); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x + s * 0.15, y); ctx.lineTo(x + s, y); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x - s * 0.15, y - s * 0.4); ctx.lineTo(x - s * 0.15, y + s * 0.4); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x + s * 0.15, y - s * 0.4); ctx.lineTo(x + s * 0.15, y + s * 0.4); ctx.stroke();
+  ctx.restore();
+}
+
+function drawDoodle(d) {
+  ctx.save();
+  ctx.translate(d.x, d.y);
+  ctx.rotate(d.rotation);
+  ctx.translate(-d.x, -d.y);
+  switch(d.type) {
+    case 'chip': drawChip(ctx, d.x, d.y, d.size, d.color, d.alpha); break;
+    case 'antenna': drawAntenna(ctx, d.x, d.y, d.size, d.color, d.alpha); break;
+    case 'radar': drawRadar(ctx, d.x, d.y, d.size, d.color, d.alpha); break;
+    case 'cpu': drawChip(ctx, d.x, d.y, d.size * 1.3, d.color, d.alpha); break;
+    case 'signal': drawSignal(ctx, d.x, d.y, d.size, d.color, d.alpha); break;
+    case 'wifi': drawWifi(ctx, d.x, d.y, d.size, d.color, d.alpha); break;
+    case 'resistor': drawResistor(ctx, d.x, d.y, d.size, d.color, d.alpha); break;
+    case 'capacitor': drawCapacitor(ctx, d.x, d.y, d.size, d.color, d.alpha); break;
+  }
+  ctx.restore();
+}
+
+let t = 0;
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Background gradient
+  const bgGrad = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, 800);
+  bgGrad.addColorStop(0, '#0a1520');
+  bgGrad.addColorStop(1, '#06090e');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Subtle glow at center
+  const glow = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, 500);
+  glow.addColorStop(0, 'rgba(0,245,196,0.04)');
+  glow.addColorStop(1, 'transparent');
+  ctx.fillStyle = glow;
+  ctx.fillRect(0, 0, W, H);
+
+  // Binary streams
+  ctx.font = '11px "Share Tech Mono"';
+  binaryStreams.forEach(s => {
+    s.y += s.speed;
+    if (s.y > H + 200) s.y = -200;
+    s.chars.forEach((c, i) => {
+      ctx.globalAlpha = s.alpha * (1 - i / s.chars.length);
+      ctx.fillStyle = i === 0 ? '#fff' : green;
+      ctx.fillText(c, s.x, s.y - i * 16);
+      if (Math.random() < 0.01) s.chars[i] = Math.round(Math.random());
+    });
+  });
+  ctx.globalAlpha = 1;
+
+  // Draw circuit lines
+  lines.forEach(l => {
+    ctx.globalAlpha = l.opacity * 0.5;
+    ctx.strokeStyle = l.color;
+    ctx.lineWidth = 0.8;
+    // Horizontal then vertical
+    const mx = l.x1 + (l.x2 - l.x1) * 0.5;
+    ctx.beginPath();
+    ctx.moveTo(l.x1, l.y1);
+    ctx.lineTo(mx, l.y1);
+    ctx.lineTo(mx, l.y2);
+    ctx.lineTo(l.x2, l.y2);
+    ctx.stroke();
+
+    // Traveling dot
+    l.progress += l.speed;
+    if (l.progress > 1) l.progress = 0;
+    const totalLen = Math.abs(l.x2 - l.x1) + Math.abs(l.y2 - l.y1);
+    const traveled = l.progress * totalLen;
+    const seg1 = Math.abs(mx - l.x1);
+    const seg2 = Math.abs(l.y2 - l.y1);
+    let dx, dy;
+    if (traveled < seg1) {
+      dx = l.x1 + (traveled * Math.sign(mx - l.x1));
+      dy = l.y1;
+    } else if (traveled < seg1 + seg2) {
+      dx = mx;
+      dy = l.y1 + ((traveled - seg1) * Math.sign(l.y2 - l.y1));
+    } else {
+      const r = traveled - seg1 - seg2;
+      dx = mx + r * Math.sign(l.x2 - mx);
+      dy = l.y2;
+    }
+    ctx.globalAlpha = 0.9;
+    ctx.fillStyle = '#fff';
+    ctx.shadowColor = l.color;
+    ctx.shadowBlur = 6;
+    ctx.beginPath(); ctx.arc(dx, dy, 2, 0, Math.PI * 2); ctx.fill();
+    ctx.shadowBlur = 0;
+  });
+  ctx.globalAlpha = 1;
+
+  // Draw nodes
+  nodes.forEach(n => {
+    n.pulse += n.pulseSpeed;
+    const p = (Math.sin(n.pulse) + 1) / 2;
+    ctx.globalAlpha = 0.3 + p * 0.5;
+    ctx.fillStyle = n.color;
+    ctx.shadowColor = n.color;
+    ctx.shadowBlur = 8;
+
+    if (n.type === 0) {
+      ctx.fillRect(n.x - n.size/2, n.y - n.size/2, n.size, n.size);
+    } else if (n.type === 1) {
+      ctx.beginPath(); ctx.arc(n.x, n.y, n.size/2, 0, Math.PI * 2); ctx.fill();
+    } else if (n.type === 2) {
+      ctx.strokeStyle = n.color;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(n.x - n.size/2, n.y - n.size/2, n.size, n.size);
+      ctx.globalAlpha = 0.1;
+      ctx.fillRect(n.x - n.size/2, n.y - n.size/2, n.size, n.size);
+    } else {
+      // diamond
+      ctx.beginPath();
+      ctx.moveTo(n.x, n.y - n.size);
+      ctx.lineTo(n.x + n.size, n.y);
+      ctx.lineTo(n.x, n.y + n.size);
+      ctx.lineTo(n.x - n.size, n.y);
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+  });
+  ctx.globalAlpha = 1;
+
+  // Doodles
+  doodles.forEach(d => {
+    d.rotation += d.rotSpeed;
+    drawDoodle(d);
+  });
+
+  // Particles
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+    if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle = p.color;
+    ctx.shadowColor = p.color;
+    ctx.shadowBlur = 4;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+    ctx.shadowBlur = 0;
+  });
+  ctx.globalAlpha = 1;
+
+  t++;
+  requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+</body>
+</html>
